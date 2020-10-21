@@ -9,8 +9,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.springboot.cursomc.dao.CategoryDAO;
 import com.springboot.cursomc.dao.ProductDAO;
-import com.springboot.cursomc.entity.Category;
-import com.springboot.cursomc.entity.Product;
+import com.springboot.cursomc.entitys.Category;
+import com.springboot.cursomc.entitys.Product;
 
 @SpringBootApplication
 public class DemoApplication implements CommandLineRunner {

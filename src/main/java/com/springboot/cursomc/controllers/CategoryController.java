@@ -1,4 +1,4 @@
-package com.springboot.cursomc.controller;
+package com.springboot.cursomc.controllers;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.springboot.cursomc.entity.Category;
-import com.springboot.cursomc.service.CategoryService;
+import com.springboot.cursomc.entitys.Category;
+import com.springboot.cursomc.services.CategoryService;
 
 @RestController
 @RequestMapping("/categories")
@@ -23,6 +23,7 @@ public class CategoryController {
 	public ResponseEntity<?> find(@PathVariable Integer id) {
 
 		Category obj = categoryService.findById(id);
+		
 
 		return ResponseEntity.ok().body(obj);
 	}

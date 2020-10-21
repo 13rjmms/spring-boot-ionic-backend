@@ -1,4 +1,4 @@
-package com.springboot.cursomc.entity;
+package com.springboot.cursomc.entitys;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 public class Category implements Serializable {
 
@@ -19,7 +21,8 @@ public class Category implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String name;
-
+	
+	@JsonManagedReference
 	@ManyToMany(mappedBy = "categories")
 	private List<Product> products = new ArrayList<>();
 
