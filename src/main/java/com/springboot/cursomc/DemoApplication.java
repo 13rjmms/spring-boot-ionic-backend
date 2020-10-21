@@ -7,14 +7,19 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.springboot.cursomc.dao.AddressDAO;
 import com.springboot.cursomc.dao.CategoryDAO;
 import com.springboot.cursomc.dao.CityDAO;
+import com.springboot.cursomc.dao.ClientDAO;
 import com.springboot.cursomc.dao.ProductDAO;
 import com.springboot.cursomc.dao.StateDAO;
+import com.springboot.cursomc.entitys.Address;
 import com.springboot.cursomc.entitys.Category;
 import com.springboot.cursomc.entitys.City;
+import com.springboot.cursomc.entitys.Client;
 import com.springboot.cursomc.entitys.Product;
 import com.springboot.cursomc.entitys.State;
+import com.springboot.cursomc.entitys.enums.ClientType;
 
 @SpringBootApplication
 public class DemoApplication implements CommandLineRunner {
@@ -30,6 +35,12 @@ public class DemoApplication implements CommandLineRunner {
 	
 	@Autowired
 	private StateDAO stateDAO;
+	
+	@Autowired
+	private AddressDAO addressDAO;
+	
+	@Autowired
+	private ClientDAO clientDAO;
 
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
@@ -67,6 +78,19 @@ public class DemoApplication implements CommandLineRunner {
 		
 		stateDAO.saveAll(Arrays.asList(state1, state2));
 		cityDAO.saveAll(Arrays.asList(c1, c2, c3));
+		
+		Client client1 = new Client(null, "Maria Silva", "maria@gmail.com", "36378912377", ClientType.PESSOAFISICA);
+		
+		client1.getPhones().addAll(Arrays.asList("27363323", "93838393"));
+		
+		Address a1 = new Address(null, "Rua Flores", "300", client1, c1);
+		Address a2 = new Address(null, "Avenida Matos", "105", client1, c2);
+		
+		client1.getAddresses().addAll(Arrays.asList(a1, a2));
+		
+		clientDAO.saveAll(Arrays.asList(client1));
+		addressDAO.saveAll(Arrays.asList(a1,a2));
+		
 		
 	}
 
