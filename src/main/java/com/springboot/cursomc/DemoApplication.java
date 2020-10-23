@@ -1,5 +1,6 @@
 package com.springboot.cursomc;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,15 +12,22 @@ import com.springboot.cursomc.dao.AddressDAO;
 import com.springboot.cursomc.dao.CategoryDAO;
 import com.springboot.cursomc.dao.CityDAO;
 import com.springboot.cursomc.dao.ClientDAO;
+import com.springboot.cursomc.dao.PackageDAO;
+import com.springboot.cursomc.dao.PaymentDAO;
 import com.springboot.cursomc.dao.ProductDAO;
 import com.springboot.cursomc.dao.StateDAO;
 import com.springboot.cursomc.entitys.Address;
+import com.springboot.cursomc.entitys.CardPayment;
 import com.springboot.cursomc.entitys.Category;
 import com.springboot.cursomc.entitys.City;
 import com.springboot.cursomc.entitys.Client;
+import com.springboot.cursomc.entitys.Package;
+import com.springboot.cursomc.entitys.Payment;
 import com.springboot.cursomc.entitys.Product;
 import com.springboot.cursomc.entitys.State;
+import com.springboot.cursomc.entitys.TicketPayment;
 import com.springboot.cursomc.entitys.enums.ClientType;
+import com.springboot.cursomc.entitys.enums.PaymentStatus;
 
 @SpringBootApplication
 public class DemoApplication implements CommandLineRunner {
@@ -41,6 +49,12 @@ public class DemoApplication implements CommandLineRunner {
 	
 	@Autowired
 	private ClientDAO clientDAO;
+	
+	@Autowired
+	private PaymentDAO paymentDAO;
+	
+	@Autowired
+	private PackageDAO orderDAO;
 
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
@@ -91,6 +105,21 @@ public class DemoApplication implements CommandLineRunner {
 		clientDAO.saveAll(Arrays.asList(client1));
 		addressDAO.saveAll(Arrays.asList(a1,a2));
 		
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		Package order1 = new Package(null, sdf.parse("30/09/2017 10:32"), client1, a1);
+		Package order2 = new Package(null, sdf.parse("10/10/2017 19:35"), client1, a2);
+		
+		Payment payment1 = new CardPayment(null, PaymentStatus.PAID, order1, 6);
+		order1.setPayment(payment1);
+		
+		Payment payment2 = new TicketPayment(null, PaymentStatus.PENDING, order2, sdf.parse("20/10/2017 00:00"), null);
+		order2.setPayment(payment2);
+		
+		client1.getOrders().addAll(Arrays.asList(order1, order2));
+		
+		orderDAO.saveAll(Arrays.asList(order1, order2));
+		paymentDAO.saveAll(Arrays.asList(payment1, payment2));
 		
 	}
 
