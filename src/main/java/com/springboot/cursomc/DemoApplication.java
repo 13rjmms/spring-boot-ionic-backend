@@ -12,7 +12,8 @@ import com.springboot.cursomc.dao.AddressDAO;
 import com.springboot.cursomc.dao.CategoryDAO;
 import com.springboot.cursomc.dao.CityDAO;
 import com.springboot.cursomc.dao.ClientDAO;
-import com.springboot.cursomc.dao.PackageDAO;
+import com.springboot.cursomc.dao.RequestDAO;
+import com.springboot.cursomc.dao.RequestedItemDAO;
 import com.springboot.cursomc.dao.PaymentDAO;
 import com.springboot.cursomc.dao.ProductDAO;
 import com.springboot.cursomc.dao.StateDAO;
@@ -21,7 +22,8 @@ import com.springboot.cursomc.entitys.CardPayment;
 import com.springboot.cursomc.entitys.Category;
 import com.springboot.cursomc.entitys.City;
 import com.springboot.cursomc.entitys.Client;
-import com.springboot.cursomc.entitys.Package;
+import com.springboot.cursomc.entitys.Request;
+import com.springboot.cursomc.entitys.RequestedItem;
 import com.springboot.cursomc.entitys.Payment;
 import com.springboot.cursomc.entitys.Product;
 import com.springboot.cursomc.entitys.State;
@@ -54,8 +56,11 @@ public class DemoApplication implements CommandLineRunner {
 	private PaymentDAO paymentDAO;
 	
 	@Autowired
-	private PackageDAO orderDAO;
+	private RequestDAO orderDAO;
 
+	@Autowired
+	private RequestedItemDAO requestedItemDAO;
+	
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
 	}
@@ -107,8 +112,8 @@ public class DemoApplication implements CommandLineRunner {
 		
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-		Package order1 = new Package(null, sdf.parse("30/09/2017 10:32"), client1, a1);
-		Package order2 = new Package(null, sdf.parse("10/10/2017 19:35"), client1, a2);
+		Request order1 = new Request(null, sdf.parse("30/09/2017 10:32"), client1, a1);
+		Request order2 = new Request(null, sdf.parse("10/10/2017 19:35"), client1, a2);
 		
 		Payment payment1 = new CardPayment(null, PaymentStatus.PAID, order1, 6);
 		order1.setPayment(payment1);
@@ -120,6 +125,19 @@ public class DemoApplication implements CommandLineRunner {
 		
 		orderDAO.saveAll(Arrays.asList(order1, order2));
 		paymentDAO.saveAll(Arrays.asList(payment1, payment2));
+		
+		RequestedItem ri1 = new RequestedItem(order1, p1, 0.00, 1, 2000.00);
+		RequestedItem ri2 = new RequestedItem(order1, p3, 0.00, 2, 80.00);
+		RequestedItem ri3 = new RequestedItem(order2, p2, 100.00, 1, 800.00);
+		
+		order1.getItems().addAll(Arrays.asList(ri1, ri2));
+		order2.getItems().addAll(Arrays.asList(ri3));
+		
+		p1.getItems().addAll(Arrays.asList(ri1));
+		p2.getItems().addAll(Arrays.asList(ri3));
+		p3.getItems().addAll(Arrays.asList(ri2));
+		
+		requestedItemDAO.saveAll(Arrays.asList(ri1, ri2, ri3));
 		
 	}
 

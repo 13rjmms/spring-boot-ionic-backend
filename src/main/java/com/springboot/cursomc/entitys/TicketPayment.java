@@ -16,7 +16,7 @@ public class TicketPayment extends Payment {
 	public TicketPayment() {
 	}
 
-	public TicketPayment(Integer id, PaymentStatus status, Package order, Date paymentDate, Date expirationDate) {
+	public TicketPayment(Integer id, PaymentStatus status, Request order, Date paymentDate, Date expirationDate) {
 		super(id, status, order);
 		this.expirationDate = expirationDate;
 		this.paymentDate = paymentDate;

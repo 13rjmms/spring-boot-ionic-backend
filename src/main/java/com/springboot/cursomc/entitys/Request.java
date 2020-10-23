@@ -2,6 +2,8 @@ package com.springboot.cursomc.entitys;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -10,10 +12,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
-public class Package implements Serializable {
+public class Request implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -31,16 +34,29 @@ public class Package implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "delivery_address_id")
 	private Address deliveryAdress;
+	
+	@OneToMany(mappedBy = "id.request")
+	private Set<RequestedItem> items = new HashSet<>();
 
-	public Package() {
+
+	public Request() {
 	}
 
-	public Package(Integer id, Date instance, Client client, Address deliveryAdress) {
+	public Request(Integer id, Date instance, Client client, Address deliveryAdress) {
 		super();
 		this.id = id;
 		this.instance = instance;
 		this.client = client;
 		this.deliveryAdress = deliveryAdress;
+	}
+	
+
+	public Set<RequestedItem> getItems() {
+		return items;
+	}
+
+	public void setItems(Set<RequestedItem> items) {
+		this.items = items;
 	}
 
 	public Integer getId() {
@@ -99,7 +115,7 @@ public class Package implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Package other = (Package) obj;
+		Request other = (Request) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
