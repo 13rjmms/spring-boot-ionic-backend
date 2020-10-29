@@ -1,5 +1,6 @@
 package com.springboot.cursomc.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,21 +22,23 @@ public class CategoryService {
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Category.class.getName()));
 	}
-	
-	
+
 	public Category insert(Category obj) {
 		obj.setId(null);
 		return categoryDAO.save(obj);
 	}
-	
+
 	public Category update(Category obj) {
 		findById(obj.getId());
 		return categoryDAO.save(obj);
 	}
-	
+
 	public void deleteById(Integer id) {
 		categoryDAO.deleteById(id);
-		
+
 	}
-	
+
+	public List<Category> findAll() {
+		return categoryDAO.findAll();
+	}
 }
