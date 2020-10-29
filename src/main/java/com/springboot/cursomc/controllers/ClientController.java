@@ -20,7 +20,7 @@ public class ClientController {
 	private ClientService clientService;
 
 	@GetMapping("/{id}")
-	public ResponseEntity<?> find(@PathVariable Integer id) {
+	public ResponseEntity<Client> find(@PathVariable Integer id) {
 
 		Client obj = clientService.findById(id);
 		

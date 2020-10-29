@@ -28,4 +28,9 @@ public class CategoryService {
 		return categoryDAO.save(obj);
 	}
 	
+	public Category update(Category obj) {
+		findById(obj.getId());
+		return categoryDAO.save(obj);
+	}
+	
 }

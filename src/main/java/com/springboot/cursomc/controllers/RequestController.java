@@ -20,7 +20,7 @@ public class RequestController {
 	private RequestService requestService;
 
 	@GetMapping("/{id}")
-	public ResponseEntity<?> find(@PathVariable Integer id) {
+	public ResponseEntity<Request> find(@PathVariable Integer id) {
 
 		Request obj = requestService.findById(id);
 		
