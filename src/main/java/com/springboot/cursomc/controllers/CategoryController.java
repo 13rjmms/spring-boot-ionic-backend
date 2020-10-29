@@ -4,7 +4,9 @@ package com.springboot.cursomc.controllers;
 import java.net.URI;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.springboot.cursomc.entitys.Category;
+import com.springboot.cursomc.service.exceptions.DataIntegrityException;
 import com.springboot.cursomc.services.CategoryService;
 
 @RestController
@@ -54,6 +57,22 @@ public class CategoryController {
 		return ResponseEntity.noContent().build();
 		
 	}
+	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> delete(@PathVariable Integer id){
+		try {
+			categoryService.deleteById(id);
+			
+		} catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityException("It is not possible to exclude a category that contains products");
+			
+		}
+		
+		
+		return ResponseEntity.noContent().build();
+		
+	}
+	
 	
 
 }
