@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -40,7 +42,8 @@ public class CategoryController {
 	}
 
 	@PostMapping()
-	public ResponseEntity<Void> insert(@RequestBody Category obj) {
+	public ResponseEntity<Void> insert(@Valid @RequestBody CategoryDTO objDto) {
+		Category obj = categoryService.fromDTO(objDto);
 		obj = categoryService.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 
@@ -49,7 +52,8 @@ public class CategoryController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Void> insert(@RequestBody Category obj, @PathVariable Integer id) {
+	public ResponseEntity<Void> insert(@Valid @RequestBody CategoryDTO objDto, @PathVariable Integer id) {
+		Category obj = categoryService.fromDTO(objDto);
 		obj.setId(id);
 		obj = categoryService.update(obj);
 
